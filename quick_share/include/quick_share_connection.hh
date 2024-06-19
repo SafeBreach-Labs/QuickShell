@@ -25,11 +25,11 @@ class QuickShareConnection {
 
         std::unique_ptr<OfflineFrame> recv_offline_frame(bool should_decrypt = false);
 
-    private:
         void send_packet(const char * packet, size_t packet_size);
 
         std::vector<char> recv_packet();
-
+        
+    private:
 
         IMedium * m_medium;
         std::unique_ptr<UKey2Handshake> m_ukey2_handshake;
