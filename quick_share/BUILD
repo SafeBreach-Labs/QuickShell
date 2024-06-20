@@ -23,7 +23,7 @@ cc_library(
     name = "quick_share",
     srcs = ["quick_share_medium.cc", "quick_share_connection.cc"],
     hdrs = glob(["include/*.hh", "include/*.h"]),
-        visibility = [
+    visibility = [
         "//visibility:public",
     ],
     deps = [
