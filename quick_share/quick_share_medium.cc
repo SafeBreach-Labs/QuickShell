@@ -56,7 +56,7 @@ void BaseClientSocketMedium::connect()
     specific_socket = create_socket();
     if (INVALID_SOCKET == specific_socket)
     {
-        throw SocketException("ERROR: Failed initializing Wifi Lan socket");
+        throw SocketException("Failed initializing Wifi Lan socket");
     }
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG, "Setting socket timeout to %u milliseconds", timeout);
@@ -64,7 +64,7 @@ void BaseClientSocketMedium::connect()
     if (SOCKET_ERROR == ret_val)
     {
         closesocket(specific_socket);
-        throw SocketException("ERROR: Failed setting timeout for Wifi Lan socket");
+        throw SocketException("Failed setting timeout for Wifi Lan socket");
     }
 
     logger_log(LoggerLogLevel::LEVEL_INFO, "Connecting to medium socket");
@@ -72,7 +72,7 @@ void BaseClientSocketMedium::connect()
     if (SOCKET_ERROR == ret_val)
     {
         closesocket(specific_socket);
-        throw SocketException("ERROR: Failed connecting to target");
+        throw SocketException("Failed connecting to target");
     }
 
     m_socket = specific_socket;
@@ -174,7 +174,7 @@ SOCKET BluetoothMedium::create_socket()
     SOCKET bluetooth_socket = ::socket(AF_BTH, SOCK_STREAM, BTHPROTO_RFCOMM);
     if (INVALID_SOCKET == bluetooth_socket)
     {
-        throw SocketException("ERROR: Couldn't create a bluetooth socket");
+        throw SocketException("Couldn't create a bluetooth socket");
     }
 
     return bluetooth_socket;

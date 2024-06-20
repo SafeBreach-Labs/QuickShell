@@ -16,8 +16,7 @@ std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_buffer(const cha
 
         // Check for end of buffer
         if (offset + frameLength > bufferSize) {
-            std::cerr << "Error: Incomplete frame in buffer." << std::endl;
-            break;
+            throw InvalidParameterException("Failed parsing offline frames buffer - Incomplete frame in buffer");
         }
 
         // Read the serialized data

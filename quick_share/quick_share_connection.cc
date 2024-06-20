@@ -97,13 +97,13 @@ void QuickShareConnection::do_handshake()
     m_ukey2_handshake = UKey2Handshake::ForInitiator(UKey2Handshake::HandshakeCipher::P256_SHA512);
     if (nullptr == m_ukey2_handshake)
     {
-        throw Ukey2Exception("ERROR: Failed creating the Ukey2Handshake object");
+        throw Ukey2Exception("Failed creating the Ukey2Handshake object");
     }
 
     packet_to_responder = m_ukey2_handshake->GetNextHandshakeMessage();
     if (nullptr == packet_to_responder)
     {
-        throw Ukey2Exception("ERROR: Failed getting first handshake message to send");
+        throw Ukey2Exception("Failed getting first handshake message to send");
     }
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG, "Sending Ukey2 Client Init");
@@ -120,7 +120,7 @@ void QuickShareConnection::do_handshake()
         {
             send_packet(result.alert_to_send->c_str(), result.alert_to_send->length());
         }
-        throw Ukey2Exception("ERROR: Failed parsing first handshake message received from the other side");
+        throw Ukey2Exception("Failed parsing first handshake message received from the other side");
     }
 
     packet_to_responder = m_ukey2_handshake->GetNextHandshakeMessage();
