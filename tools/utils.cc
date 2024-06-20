@@ -41,8 +41,8 @@ std::unique_ptr<std::vector<char>> read_file_content(const char * file_path) {
     return file_content;
 }
 
-std::vector<char> base64_decode(const std::string &encoded_string) {
-    std::vector<char> decoded;
+std::vector<uint8_t> base64_decode(const std::string &encoded_string) {
+    std::vector<uint8_t> decoded;
     int in_len = static_cast<int>(encoded_string.size());
 
     int i = 0;
@@ -63,7 +63,7 @@ std::vector<char> base64_decode(const std::string &encoded_string) {
             char_array_3[2] = ((char_array_4[2] & 0x03) << 6) + char_array_4[3];
 
             for (i = 0; i < 3; i++) {
-                decoded.push_back(char_array_3[i]);
+                decoded.push_back(static_cast<uint8_t>(char_array_3[i]));
             }
             i = 0;
         }
@@ -83,7 +83,7 @@ std::vector<char> base64_decode(const std::string &encoded_string) {
         char_array_3[2] = ((char_array_4[2] & 0x03) << 6) + char_array_4[3];
 
         for (j = 0; j < i - 1; j++) {
-            decoded.push_back(char_array_3[j]);
+            decoded.push_back(static_cast<uint8_t>(char_array_3[j]));
         }
     }
 

@@ -9,7 +9,7 @@ size_t get_file_size(const char * file_path);
 
 std::unique_ptr<std::vector<char>> read_file_content(const char * file_path);
 
-std::vector<char> base64_decode(const std::string &encoded_string);
+std::vector<uint8_t> base64_decode(const std::string &encoded_string);
 
 bool is_base64(char c);
 
