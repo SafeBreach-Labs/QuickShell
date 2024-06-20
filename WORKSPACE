@@ -17,27 +17,29 @@ filegroup(
 """
 
 http_archive(
-    name = "rules_python",  # 2023-01-10T22:00:51Z
-    sha256 = "5de54486a60ad8948dabe49605bb1c08053e04001a431ab3e96745b4d97a4419",
-    strip_prefix = "rules_python-70cce26432187a60b4e950118791385e6fb3c26f",
-    urls = ["https://github.com/bazelbuild/rules_python/archive/70cce26432187a60b4e950118791385e6fb3c26f.zip"],
+    name = "rules_pkg",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.9.1/rules_pkg-0.9.1.tar.gz",
+        "https://github.com/bazelbuild/rules_pkg/releases/download/0.9.1/rules_pkg-0.9.1.tar.gz",
+    ],
+    sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
 )
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+rules_pkg_dependencies()
+
 
 http_archive(
     name = "com_google_protobuf",
-    strip_prefix = "protobuf-3.17.0",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.17.0.tar.gz"],
+    strip_prefix = "protobuf-27.1",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/refs/tags/v27.1.tar.gz"],
 )
 
-http_archive(
-    name = "com_google_protobuf_cc",
-    strip_prefix = "protobuf-3.17.0",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.17.0.tar.gz"],
-)
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+protobuf_deps()
 
 http_archive(
     name = "boringssl",
-    sha256 = "5d299325d1db8b2f2db3d927c7bc1f9fcbd05a3f9b5c8239fa527c09bf97f995",  # Last updated 2022-10-19
+    sha256 = "5d299325d1db8b2f2db3d927c7bc1f9fcbd05a3f9b5c8239fa527c09bf97f995",
     strip_prefix = "boringssl-0acfcff4be10514aacb98eb8ab27bb60136d131b",
     urls = ["https://github.com/google/boringssl/archive/0acfcff4be10514aacb98eb8ab27bb60136d131b.tar.gz"],
 )
@@ -46,4 +48,26 @@ http_archive(
     name = "com_google_ukey2",
     strip_prefix = "ukey2-master",
     urls = ["https://github.com/google/ukey2/archive/master.zip"],
+)
+
+http_archive(
+    name = "argparse",
+    sha256 = "674e724c2702f0bfef1619161815257a407e1babce30d908327729fba6ce4124",
+    strip_prefix = "argparse-3.0",
+    url = "https://github.com/p-ranav/argparse/archive/refs/tags/v3.0.zip",
+    # For some reason bazel fails to find argparse's BUILD file in its root folder no matter what
+    build_file_content = """
+cc_library(
+    name = "argparse",
+    hdrs = ["include/argparse/argparse.hpp"],
+    includes = ["include"],
+    visibility = ["//visibility:public"],
+)"""
+
+)
+
+http_archive(
+    name = "com_google_absl",
+    strip_prefix = "abseil-cpp-20240116.2",
+    urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20240116.2.tar.gz"],
 )
