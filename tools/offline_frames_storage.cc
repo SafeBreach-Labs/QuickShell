@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_buffer(const char* buffer, size_t bufferSize) {
+std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_buffer(const uint8_t * buffer, size_t bufferSize) {
     std::vector<std::unique_ptr<OfflineFrame>> offlineFrames;
     size_t offset = 0;
 
@@ -49,10 +49,9 @@ std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_file(const char*
     std::streampos fileSize = fileStream.tellg();
     fileStream.seekg(0, std::ios::beg);
 
-    std::vector<char> buffer(fileSize);
-    fileStream.read(buffer.data(), fileSize);
+    std::vector<uint8_t> buffer(fileSize);
+    fileStream.read((char*)buffer.data(), fileSize);
     fileStream.close();
 
-    // Parse the buffer using parse_offline_frames_buffer function
     return parse_offline_frames_buffer(buffer.data(), fileSize);
 }

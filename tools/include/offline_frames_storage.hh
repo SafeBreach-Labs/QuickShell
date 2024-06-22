@@ -10,6 +10,6 @@ using OfflineFrame = ::location::nearby::connections::OfflineFrame;
 
 std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_file(const char * filePath);
 
-std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_buffer(const char* buffer, size_t bufferSize);
+std::vector<std::unique_ptr<OfflineFrame>> parse_offline_frames_buffer(const uint8_t * buffer, size_t bufferSize);
 
 #endif /* TOOLS_OFFLINE_FRAME_STORAGE */
