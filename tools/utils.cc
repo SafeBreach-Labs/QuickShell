@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <winsock2.h>
+#include <Windows.h>
 
 #include "quick_share/include/exceptions.hh"
 
@@ -10,6 +12,14 @@ static const std::string BASE64_CHARS =
     "abcdefghijklmnopqrstuvwxyz"
     "0123456789+/";
 
+void initialize_wsa()
+{
+    WSADATA wsa;
+    if (0 != WSAStartup(MAKEWORD(2, 2), &wsa))
+    {
+        throw SocketException("Call to WSAStartup failed");
+    }
+}
 
 size_t get_file_size(const char * file_path) {
     std::ifstream file_stream(file_path, std::ios::binary);

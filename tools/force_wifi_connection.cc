@@ -7,6 +7,7 @@
 #include "quick_share/include/exceptions.hh"
 #include "tools/include/offline_frames_storage.hh"
 #include "logger/include/logger.hh"
+#include "tools/include/utils.hh"
 
 #pragma warning( push )
 #pragma warning( disable : 4838) 
@@ -164,6 +165,12 @@ void force_wifi_connection(std::string target_bt_mac, std::string ap_ssid, std::
 
 
 int main(int argc, char ** argv) {
+    std::string target_bt_mac;
+    std::string ap_ssid;
+    std::string ap_password;
+    std::string ip;
+    unsigned int ap_frequency;
+    
     argparse::ArgumentParser parser("force_wifi_connection.exe");
     parser.add_description(
         "Forces a target Quick Share device to connect to a specified WiFi network.\n"
@@ -185,11 +192,6 @@ int main(int argc, char ** argv) {
         "be in the target WiFi network."
     );
 
-    std::string target_bt_mac;
-    std::string ap_ssid;
-    std::string ap_password;
-    std::string ip;
-    unsigned int ap_frequency;
 
     try {
         parser.parse_args(argc, argv);
@@ -204,11 +206,15 @@ int main(int argc, char ** argv) {
         return 1;
     }
     
+    int main_ret_val = 0;
     try {
+        initialize_wsa(); // Must be called once in a program in order to use Windows sockets
         force_wifi_connection(target_bt_mac, ap_ssid, ap_password, ap_frequency, ip);
     } catch (BaseException e) {
         logger_log(LoggerLogLevel::LEVEL_ERROR, "Got an exception:\n%s", e.what());
+        main_ret_val = 1;
     }
 
-    return 0;
+    WSACleanup(); // Must be called before program exit if WSA was initialized
+    return main_ret_val;
 }

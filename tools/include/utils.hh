@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+void initialize_wsa();
+
 size_t get_file_size(const char * file_path);
 
 std::unique_ptr<std::vector<char>> read_file_content(const char * file_path);

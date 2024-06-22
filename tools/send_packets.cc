@@ -6,6 +6,7 @@
 #include "quick_share/include/exceptions.hh"
 #include "logger/include/logger.hh"
 #include "tools/include/offline_frames_storage.hh"
+#include "tools/include/utils.hh"
 
 static const GUID QUICK_SHARE_BT_GUID = {0xA82EFA21, 0xAE5C, 0x3DDE, {0x9B, 0xBC, 0xF1, 0x6D, 0xA7, 0xB1, 0x6C, 0x5A}};
 
@@ -73,10 +74,11 @@ void send_packets(IMedium * medium, const char * offline_frames_file_path) {
 
 int main(int argc, char **argv)
 {
+    int main_ret_val = 0;
     BluetoothMedium bt_medium;
     WifiLanMedium wifi_medium;
     IMedium *medium = nullptr;
-
+    std::string offline_frames_file_path;
     argparse::ArgumentParser * chosen_parser = nullptr;
 
     argparse::ArgumentParser wifi_lan_parser("wifi_lan");
@@ -103,35 +105,42 @@ int main(int argc, char **argv)
     parser.add_subparser(wifi_lan_parser);
     parser.add_subparser(bt_parser);
 
+    // Don't trust third party argparse library to not throw exceptions
     try {
         parser.parse_args(argc, argv);
+
+        if (parser.is_subcommand_used("wifi_lan")) {
+            std::string ip = wifi_lan_parser.get("ip");
+            unsigned int port = wifi_lan_parser.get<unsigned int>("port");
+            wifi_medium.set_target(ip.c_str(), port);
+            medium = &wifi_medium;
+            chosen_parser = &wifi_lan_parser;
+        } else if (parser.is_subcommand_used("bt")) {
+            std::string bt_mac = bt_parser.get("mac_addr");
+            bt_medium.set_target(bt_mac.c_str(), QUICK_SHARE_BT_GUID);
+            medium = &bt_medium;
+            chosen_parser = &bt_parser;
+        } else {
+            std::cout << "You must choose a medium type (wifi_lan / bt)" << std::endl;
+            return 1;
+        }
+
+        offline_frames_file_path = chosen_parser->get("offline_frames_file_path");
     } catch (const std::exception &err) {
         std::cerr << err.what() << std::endl;
         std::cerr << parser;
         return 1;
     }
 
-    if (parser.is_subcommand_used("wifi_lan")) {
-        std::string ip = wifi_lan_parser.get("ip");
-        unsigned int port = wifi_lan_parser.get<unsigned int>("port");
-        wifi_medium.set_target(ip.c_str(), port);
-        medium = &wifi_medium;
-        chosen_parser = &wifi_lan_parser;
-    } else if (parser.is_subcommand_used("bt")) {
-        std::string bt_mac = bt_parser.get("mac_addr");
-        bt_medium.set_target(bt_mac.c_str(), QUICK_SHARE_BT_GUID);
-        medium = &bt_medium;
-        chosen_parser = &bt_parser;
-    } else {
-        std::cout << "You must choose a medium type (wifi_lan / bt)" << std::endl;
-        return 1;
-    }
-
+    // Catch QuickShell exceptions and print them if there are any
     try {
-        send_packets(medium, chosen_parser->get("offline_frames_file_path").c_str());
+        initialize_wsa(); // Must be called once in a program in order to use Windows sockets
+        send_packets(medium, offline_frames_file_path.c_str());
     } catch (BaseException e) {
         logger_log(LoggerLogLevel::LEVEL_ERROR, "Got an exception:\n%s", e.what());
+        main_ret_val = 1;
     }
 
-    return 0;
+    WSACleanup(); // Must be called before program exit if WSA was initialized
+    return main_ret_val;
 }

@@ -8,16 +8,6 @@
 #include "quick_share/include/exceptions.hh"
 
 static void str2ba(const char *straddr, BTH_ADDR *btaddr);
-static void initialize_wsa();
-
-static void initialize_wsa()
-{
-    WSADATA wsa;
-    if (0 != WSAStartup(MAKEWORD(2, 2), &wsa))
-    {
-        throw SocketException("Call to WSAStartup failed");
-    }
-}
 
 static void str2ba(const char *straddr, BTH_ADDR *btaddr)
 {
@@ -39,10 +29,7 @@ static void str2ba(const char *straddr, BTH_ADDR *btaddr)
     }
 }
 
-BaseClientSocketMedium::BaseClientSocketMedium()
-{
-    initialize_wsa();
-}
+BaseClientSocketMedium::BaseClientSocketMedium() {}
 
 void BaseClientSocketMedium::connect()
 {
@@ -56,7 +43,7 @@ void BaseClientSocketMedium::connect()
     specific_socket = create_socket();
     if (INVALID_SOCKET == specific_socket)
     {
-        throw SocketException("Failed initializing Wifi Lan socket");
+        throw SocketException("Failed initializing medium socket");
     }
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG, "Setting socket timeout to %u milliseconds", timeout);
@@ -64,7 +51,7 @@ void BaseClientSocketMedium::connect()
     if (SOCKET_ERROR == ret_val)
     {
         closesocket(specific_socket);
-        throw SocketException("Failed setting timeout for Wifi Lan socket");
+        throw SocketException("Failed setting timeout for medium socket");
     }
 
     logger_log(LoggerLogLevel::LEVEL_INFO, "Connecting to medium socket");
@@ -133,7 +120,7 @@ void WifiLanMedium::set_target(const char *target_ip, unsigned int target_port)
 SOCKET WifiLanMedium::create_socket()
 {
     logger_log(LoggerLogLevel::LEVEL_INFO, "Creating WIFI_LAN socket");
-    SOCKET wifi_lan_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+    SOCKET wifi_lan_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 
     if (INVALID_SOCKET == wifi_lan_socket)
     {
@@ -199,7 +186,7 @@ unsigned int WifiHotspotMedium::bind(const char *hotspot_listen_ip, unsigned int
     m_server_sock_addr.sin_port = htons(listen_port);
     m_server_sock_addr.sin_addr.S_un.S_addr = inet_addr(hotspot_listen_ip);
 
-    server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    server_socket = ::socket(AF_INET, SOCK_STREAM, 0);
     if (INVALID_SOCKET == server_socket)
     {
         throw SocketException("Failed creating a socket for WifiHotspotMedium");

@@ -72,8 +72,10 @@ const uint8_t BASE_FILE_OFFLINE_FRAMES_BUFFER[820] = {
 #pragma warning(pop)
 
 static const GUID QUICK_SHARE_BT_GUID = {0xA82EFA21, 0xAE5C, 0x3DDE, {0x9B, 0xBC, 0xF1, 0x6D, 0xA7, 0xB1, 0x6C, 0x5A}};
+static const unsigned int PRE_DISCONNECTION_DELAY = 500; // millis
 
 void send_file_with_bypass(IMedium * medium, const char * file_path, std::vector<uint8_t> file_name) {
+    unsigned int current_offline_frame_index = 0;
     size_t file_size = get_file_size(file_path);
 
     std::vector<std::unique_ptr<OfflineFrame>> offline_frames = parse_offline_frames_buffer(BASE_FILE_OFFLINE_FRAMES_BUFFER, sizeof(BASE_FILE_OFFLINE_FRAMES_BUFFER));
@@ -90,8 +92,6 @@ void send_file_with_bypass(IMedium * medium, const char * file_path, std::vector
     QuickShareConnection quick_share_connection(medium);
     logger_log(LoggerLogLevel::LEVEL_INFO, "Connecting to the target");
     quick_share_connection.connect();
-
-    unsigned int current_offline_frame_index = 0;
 
     logger_log(LoggerLogLevel::LEVEL_INFO, "Sending Connection Request");
     quick_share_connection.send_offline_frame(*(offline_frames[current_offline_frame_index++]));
@@ -111,7 +111,7 @@ void send_file_with_bypass(IMedium * medium, const char * file_path, std::vector
     quick_share_connection.send_offline_frame(*(offline_frames[current_offline_frame_index++]), true);
 
     logger_log(LoggerLogLevel::LEVEL_INFO, "Sleeping 500 millis before disconnecting, allowing the target to read our last packet");
-    Sleep(500);
+    Sleep(PRE_DISCONNECTION_DELAY);
 
     logger_log(LoggerLogLevel::LEVEL_INFO, "Disconnecting");
     quick_share_connection.disconnect();
@@ -120,10 +120,13 @@ void send_file_with_bypass(IMedium * medium, const char * file_path, std::vector
 
 int main(int argc, char **argv)
 {
+    int main_ret_val = 0;
     BluetoothMedium bt_medium;
     WifiLanMedium wifi_medium;
-
+    std::string file_path;
+    std::string base64_file_name;
     IMedium *medium = nullptr;
+    std::vector<uint8_t> file_name;
 
     argparse::ArgumentParser * chosen_parser = nullptr;
 
@@ -144,9 +147,30 @@ int main(int argc, char **argv)
     parser.add_subparser(wifi_lan_parser);
     parser.add_subparser(bt_parser);
 
+
+    // Don't trust third party argparse library to not throw exceptions
     try
     {
         parser.parse_args(argc, argv);
+        if (parser.is_subcommand_used("wifi_lan"))
+        {
+            std::string ip = wifi_lan_parser.get("ip");
+            unsigned int port = wifi_lan_parser.get<unsigned int>("port");
+            wifi_medium.set_target(ip.c_str(), port);
+            medium = &wifi_medium;
+            chosen_parser = &wifi_lan_parser;
+        } else if (parser.is_subcommand_used("bt")) {
+            std::string bt_mac = bt_parser.get("mac_addr");
+            bt_medium.set_target(bt_mac.c_str(), QUICK_SHARE_BT_GUID);
+            medium = &bt_medium;
+            chosen_parser = &bt_parser;
+        } else {
+            std::cout << "You must choose a medium type (wifi_lan / bt)" << std::endl;
+            return 1;
+        }
+
+        file_path = chosen_parser->get("file_path");
+        base64_file_name = chosen_parser->get("base64_file_name");
     }
     catch (const std::exception &err)
     {
@@ -155,31 +179,16 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    if (parser.is_subcommand_used("wifi_lan"))
-    {
-        std::string ip = wifi_lan_parser.get("ip");
-        unsigned int port = wifi_lan_parser.get<unsigned int>("port");
-        wifi_medium.set_target(ip.c_str(), port);
-        medium = &wifi_medium;
-        chosen_parser = &wifi_lan_parser;
-    } else if (parser.is_subcommand_used("bt")) {
-        std::string bt_mac = bt_parser.get("mac_addr");
-        bt_medium.set_target(bt_mac.c_str(), QUICK_SHARE_BT_GUID);
-        medium = &bt_medium;
-        chosen_parser = &bt_parser;
-    } else {
-        std::cout << "You must choose a medium type (wifi_lan / bt)" << std::endl;
-        return 1;
-    }
-
-    const char *file_path = chosen_parser->get("file_path").c_str();
-    std::vector<uint8_t> file_name = base64_decode(chosen_parser->get("base64_file_name").c_str());
+    file_name = base64_decode(base64_file_name.c_str());
     
     try {
-        send_file_with_bypass(medium, file_path, file_name);
+        initialize_wsa(); // Must be called once in a program in order to use Windows sockets
+        send_file_with_bypass(medium, file_path.c_str(), file_name);
     } catch (BaseException e) {
         logger_log(LoggerLogLevel::LEVEL_ERROR, "Got an exception:\n%s", e.what());
+        main_ret_val = 1;
     }
 
-    return 0;
+    WSACleanup(); // Must be called before program exit if WSA was initialized
+    return main_ret_val;
 }
