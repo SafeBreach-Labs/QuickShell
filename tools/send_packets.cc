@@ -9,20 +9,6 @@
 
 static const GUID QUICK_SHARE_BT_GUID = {0xA82EFA21, 0xAE5C, 0x3DDE, {0x9B, 0xBC, 0xF1, 0x6D, 0xA7, 0xB1, 0x6C, 0x5A}};
 
-static const unsigned int MEDIUM_TYPE_ARG_INDEX = 1;
-
-enum WifiLanArgsIndex
-{
-    WIFI_ARGS_IP = 2,
-    WIFI_ARGS_PORT = 3,
-    WIFI_ARGS_PACKETS_FILE_PATH = 4
-};
-
-enum BtArgsIndex
-{
-    BT_ARGS_BT_ADDR = 2,
-    BT_ARGS_PACKETS_FILE_PATH = 3
-};
 
 void send_packets(IMedium * medium, const char * offline_frames_file_path) {
     unsigned int current_offline_frame_index = 0;
@@ -87,8 +73,6 @@ void send_packets(IMedium * medium, const char * offline_frames_file_path) {
 
 int main(int argc, char **argv)
 {
-    const std::string medium_type = argv[MEDIUM_TYPE_ARG_INDEX];
-
     BluetoothMedium bt_medium;
     WifiLanMedium wifi_medium;
     IMedium *medium = nullptr;
@@ -106,23 +90,28 @@ int main(int argc, char **argv)
     bt_parser.add_argument("mac_addr").help("The bluetooth MAC address of the target Quick Share device");
     bt_parser.add_argument("offline_frames_file_path").help("Path to a file that contains serialized offline frames. The format is [DWORD little endian length][serialized offline frame]");
 
-    argparse::ArgumentParser parser(argv[0]);
+    argparse::ArgumentParser parser("send_packets.exe");
+    parser.add_description(
+        "Sends a normal sequence of custom Offline Frame packets. The packet types should be in the following order (as always in a normal transfer):\n"
+        "1. Connection Request\n"
+        "2. Connection Response\n"
+        "3. Payload Transfer Paired Key Encryption\n"
+        "4. Payload Transfer Paired Key Result\n"
+        "5. Payload Transfer Introduction\n"
+        "6. Payload Transfer"
+    );
     parser.add_subparser(wifi_lan_parser);
     parser.add_subparser(bt_parser);
 
-    try
-    {
+    try {
         parser.parse_args(argc, argv);
-    }
-    catch (const std::exception &err)
-    {
+    } catch (const std::exception &err) {
         std::cerr << err.what() << std::endl;
         std::cerr << parser;
         return 1;
     }
 
-    if (parser.is_subcommand_used("wifi_lan"))
-    {
+    if (parser.is_subcommand_used("wifi_lan")) {
         std::string ip = wifi_lan_parser.get("ip");
         unsigned int port = wifi_lan_parser.get<unsigned int>("port");
         wifi_medium.set_target(ip.c_str(), port);
