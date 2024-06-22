@@ -29,9 +29,9 @@ static void str2ba(const char *straddr, BTH_ADDR *btaddr)
     }
 }
 
-BaseClientSocketMedium::BaseClientSocketMedium() {}
+BaseSocketMedium::BaseSocketMedium() {}
 
-void BaseClientSocketMedium::connect()
+void BaseSocketMedium::connect()
 {
     SOCKET specific_socket = INVALID_SOCKET;
     unsigned int timeout = 10000;
@@ -66,7 +66,7 @@ void BaseClientSocketMedium::connect()
     logger_log(LoggerLogLevel::LEVEL_INFO, "Successfully connected to medium socket");
 }
 
-void BaseClientSocketMedium::disconnect()
+void BaseSocketMedium::disconnect()
 {
     logger_log(LoggerLogLevel::LEVEL_INFO, "Disconnecting from medium socket");
     if (INVALID_SOCKET != m_socket)
@@ -75,7 +75,7 @@ void BaseClientSocketMedium::disconnect()
     }
 }
 
-void BaseClientSocketMedium::send(const char *buffer, size_t buffer_size)
+void BaseSocketMedium::send(const char *buffer, size_t buffer_size)
 {
     logger_log(LoggerLogLevel::LEVEL_INFO, "Sending packet through socket");
     if (SOCKET_ERROR == ::send(m_socket, (char *)buffer, buffer_size, 0))
@@ -84,7 +84,7 @@ void BaseClientSocketMedium::send(const char *buffer, size_t buffer_size)
     }
 }
 
-std::vector<char> BaseClientSocketMedium::recv(size_t num_bytes_to_read)
+std::vector<char> BaseSocketMedium::recv(size_t num_bytes_to_read)
 {
     std::vector<char> received_data(num_bytes_to_read);
     logger_log(LoggerLogLevel::LEVEL_INFO, "Receiving packet from socket");
@@ -254,7 +254,7 @@ void WifiHotspotMedium::disconnect()
 {
     logger_log(LoggerLogLevel::LEVEL_INFO, "Disconnecting WIFI_HOTSPOT socket");
     closesocket(m_server_socket);
-    BaseClientSocketMedium::disconnect();
+    BaseSocketMedium::disconnect();
 }
 
 SOCKADDR_IN &WifiHotspotMedium::get_connected_client_sock_addr()

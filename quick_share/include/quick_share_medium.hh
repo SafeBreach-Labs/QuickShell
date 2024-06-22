@@ -23,10 +23,10 @@ public:
     virtual std::vector<char> recv(size_t num_bytes_to_read) = 0;
 };
 
-class BaseClientSocketMedium : public IMedium
+class BaseSocketMedium : public IMedium
 {
 public:
-    BaseClientSocketMedium();
+    BaseSocketMedium();
 
     virtual void connect() override;
 
@@ -44,7 +44,7 @@ protected:
     SOCKET m_socket = INVALID_SOCKET;
 };
 
-class WifiLanMedium : public BaseClientSocketMedium
+class WifiLanMedium : public BaseSocketMedium
 {
 public:
     void set_target(const char *target_ip, unsigned int target_port);
@@ -58,7 +58,7 @@ private:
     SOCKADDR_IN m_sock_addr = {0};
 };
 
-class BluetoothMedium : public BaseClientSocketMedium
+class BluetoothMedium : public BaseSocketMedium
 {
 public:
     void set_target(const char *target_mac_address, GUID target_service_class_id);
@@ -72,10 +72,10 @@ private:
     SOCKADDR_BTH m_bluetooth_server_addr = {0};
 };
 
-class WifiHotspotMedium : public BaseClientSocketMedium
+class WifiHotspotMedium : public BaseSocketMedium
 {
 public:
-    WifiHotspotMedium(TIMEVAL accept_timeout) : m_accept_timeout(accept_timeout), BaseClientSocketMedium() {}
+    WifiHotspotMedium(TIMEVAL accept_timeout) : m_accept_timeout(accept_timeout), BaseSocketMedium() {}
     unsigned int bind(const char *hotspot_listen_ip, unsigned int listen_port);
     SOCKADDR_IN &get_connected_client_sock_addr();
 
