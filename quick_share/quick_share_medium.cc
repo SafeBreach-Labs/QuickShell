@@ -29,12 +29,9 @@ static void str2ba(const char *straddr, BTH_ADDR *btaddr)
     }
 }
 
-BaseSocketMedium::BaseSocketMedium() {}
-
 void BaseSocketMedium::connect()
 {
     SOCKET specific_socket = INVALID_SOCKET;
-    unsigned int timeout = 10000;
     int ret_val = -1;
     SOCKADDR *socket_address = get_socket_address();
     size_t socket_address_size = get_socket_address_size();
@@ -46,8 +43,8 @@ void BaseSocketMedium::connect()
         throw SocketException("Failed initializing medium socket");
     }
 
-    logger_log(LoggerLogLevel::LEVEL_DEBUG, "Setting socket timeout to %u milliseconds", timeout);
-    ret_val = setsockopt(specific_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
+    logger_log(LoggerLogLevel::LEVEL_DEBUG, "Setting socket timeout to %u milliseconds", m_socket_timeout);
+    ret_val = setsockopt(specific_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&m_socket_timeout, sizeof(m_socket_timeout));
     if (SOCKET_ERROR == ret_val)
     {
         closesocket(specific_socket);

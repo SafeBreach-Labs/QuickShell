@@ -26,7 +26,7 @@ public:
 class BaseSocketMedium : public IMedium
 {
 public:
-    BaseSocketMedium();
+    BaseSocketMedium(unsigned int socket_timeout) : m_socket_timeout(socket_timeout) {}
 
     virtual void connect() override;
 
@@ -40,13 +40,14 @@ protected:
     virtual SOCKET create_socket() = 0;
     virtual SOCKADDR *get_socket_address() = 0;
     virtual size_t get_socket_address_size() = 0;
-
+    unsigned int m_socket_timeout = {0};
     SOCKET m_socket = INVALID_SOCKET;
 };
 
 class WifiLanMedium : public BaseSocketMedium
 {
 public:
+    WifiLanMedium(unsigned int socket_timeout = 5000) : BaseSocketMedium(socket_timeout) {}
     void set_target(const char *target_ip, unsigned int target_port);
 
 protected:
@@ -61,6 +62,7 @@ private:
 class BluetoothMedium : public BaseSocketMedium
 {
 public:
+    BluetoothMedium(unsigned int socket_timeout = 5000) : BaseSocketMedium(socket_timeout) {}
     void set_target(const char *target_mac_address, GUID target_service_class_id);
 
 protected:
@@ -75,7 +77,7 @@ private:
 class WifiHotspotMedium : public BaseSocketMedium
 {
 public:
-    WifiHotspotMedium(TIMEVAL accept_timeout) : m_accept_timeout(accept_timeout), BaseSocketMedium() {}
+    WifiHotspotMedium(TIMEVAL accept_timeout, unsigned int socket_timeout = 5000) : m_accept_timeout(accept_timeout), BaseSocketMedium(socket_timeout) {}
     unsigned int bind(const char *hotspot_listen_ip, unsigned int listen_port);
     SOCKADDR_IN &get_connected_client_sock_addr();
 
