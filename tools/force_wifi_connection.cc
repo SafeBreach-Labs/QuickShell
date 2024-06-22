@@ -152,6 +152,9 @@ void force_wifi_connection(std::string target_bt_mac, std::string ap_ssid, std::
     quick_share_connection.set_medium(&hotspot_medium);
     bt_medium.disconnect();
 
+    logger_log(LoggerLogLevel::LEVEL_INFO, "Receiving Bandwidth Upgrade Client Introduction");
+    quick_share_connection.recv_offline_frame(false);
+
     logger_log(LoggerLogLevel::LEVEL_INFO, "Sending SAFE_TO_DISCONNECT_PRIOR_CHANNEL");
     quick_share_connection.send_offline_frame(**offline_frames_iterator++, true);
 
