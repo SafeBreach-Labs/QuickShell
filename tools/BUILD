@@ -32,15 +32,6 @@ cc_binary(
     ],
 )
 
-cc_binary(
-    name = "send_and_force_hold_file_with_bypass",
-    srcs = ["send_and_force_hold_file_with_bypass.cc"],
-    deps = [
-        ":tools_library",
-        "//logger:logger",
-        "//quick_share:quick_share",
-    ],
-)
 
 cc_binary(
     name = "force_wifi_connection",
@@ -49,5 +40,6 @@ cc_binary(
         ":tools_library",
         "//logger:logger",
         "//quick_share:quick_share",
+        "@argparse//:argparse",
     ],
 )
