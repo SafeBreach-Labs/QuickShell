@@ -132,7 +132,7 @@ void force_wifi_connection(std::string target_bt_mac, std::string ap_ssid, std::
     }
 
     const char * client_ip = inet_ntoa(hotspot_medium.get_connected_client_sock_addr().sin_addr);
-    printf("Victim successfully connected to our hotspot with IP: %s\n", client_ip);
+    logger_log(LoggerLogLevel::LEVEL_INFO, "Victim successfully connected to our hotspot with IP: %s\n", client_ip);
 
     logger_log(LoggerLogLevel::LEVEL_INFO, "Setting medium to BluetoothMedium and receiving all leftover packets");
     quick_share_connection.set_medium(&bt_medium);
