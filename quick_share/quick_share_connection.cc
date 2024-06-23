@@ -42,9 +42,13 @@ std::vector<char> QuickShareConnection::recv_packet()
 
 void QuickShareConnection::send_offline_frame(OfflineFrame &offline_frame, bool should_encrypt)
 {
-    std::string offline_frame_bytes(offline_frame.SerializeAsString());
     logger_log(LoggerLogLevel::LEVEL_DEBUG, "Sending offline frame:");
     logger_log(LoggerLogLevel::LEVEL_DEBUG, offline_frame.DebugString().c_str());
+
+    std::string offline_frame_bytes(offline_frame.SerializeAsString());
+    if (offline_frame_bytes.empty()) {
+        throw ProtobufException("Failed serializing an Offline Frame");
+    }
 
     if (should_encrypt)
     {
@@ -61,21 +65,26 @@ std::unique_ptr<OfflineFrame> QuickShareConnection::recv_offline_frame(bool shou
 {
     std::vector<char> packet_bytes = recv_packet();
     std::string packet_bytes_string(packet_bytes.begin(), packet_bytes.end());
-
     auto offline_frame = std::make_unique<OfflineFrame>();
+    std::unique_ptr<std::string> decrypted_offline_frame_bytes;
+    std::string * bytes_to_parse;
 
     if (should_decrypt)
     {
-        std::unique_ptr<std::string> decrypted_offline_frame_bytes = m_connection_context->DecodeMessageFromPeer(packet_bytes_string);
+        decrypted_offline_frame_bytes = m_connection_context->DecodeMessageFromPeer(packet_bytes_string);
         if (!decrypted_offline_frame_bytes)
         {
             return nullptr;
         }
-        offline_frame->ParseFromString(*decrypted_offline_frame_bytes);
+        bytes_to_parse = decrypted_offline_frame_bytes.get();
     }
     else
     {
-        offline_frame->ParseFromString(packet_bytes_string);
+        bytes_to_parse = &packet_bytes_string;
+    }
+
+    if (!offline_frame->ParseFromString(*bytes_to_parse)) {
+        throw ProtobufException("Failed parsing Offline Frame bytes into an Offline Frame object");
     }
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received offline frame:");
