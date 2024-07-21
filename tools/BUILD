@@ -43,16 +43,3 @@ cc_binary(
         "@argparse//:argparse",
     ],
 )
-
-cc_binary(
-    name = "quick_shell_communication_tools",
-    srcs = [],
-    linkstatic = True,
-    linkshared = 1,
-    copts = ["/DCOMPILING_DLL"],
-    deps = [
-        ":force_wifi_connection",
-        ":send_file_with_bypass",
-        ":send_packets",
-    ],
-)
