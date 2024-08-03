@@ -71,3 +71,9 @@ http_archive(
     strip_prefix = "abseil-cpp-20240116.2",
     urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20240116.2.tar.gz"],
 )
+
+http_archive(
+    name = "nlohmann_json",
+    strip_prefix = "json-3.11.3",
+    urls = ["https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz"]
+)
