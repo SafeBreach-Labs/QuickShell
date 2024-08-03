@@ -5,7 +5,7 @@
 #include <winsock2.h>
 #include <Windows.h>
 
-#include "quick_share/include/exceptions.hh"
+#include "common/include/exceptions.hh"
 
 static const std::string BASE64_CHARS =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

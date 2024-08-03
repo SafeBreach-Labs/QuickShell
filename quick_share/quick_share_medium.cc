@@ -1,11 +1,11 @@
 #include "quick_share/include/quick_share_medium.hh"
-#include "logger/include/logger.hh"
+#include "common/include/logger.hh"
 
 #include <cstdlib>
 #include <vector>
 #include <Wlanapi.h>
 
-#include "quick_share/include/exceptions.hh"
+#include "common/include/exceptions.hh"
 
 static void str2ba(const char *straddr, BTH_ADDR *btaddr);
 

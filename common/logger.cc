@@ -1,4 +1,4 @@
-#include "logger\include\logger.hh"
+#include "common/include/logger.hh"
 
 // Initialize static member
 Logger &Logger::get_instance()
@@ -57,25 +57,32 @@ std::string Logger::get_log_level_string(LoggerLogLevel level)
     }
 }
 
-void Logger::log(LoggerLogLevel level, const char* format, va_list args) {
-    if (level < log_level_) {
+void Logger::log(LoggerLogLevel level, const char *format, va_list args)
+{
+    if (level < log_level_)
+    {
         return;
     }
 
     std::string log_message = "[" + get_log_level_string(level) + "] ";
 
     // Use vfprintf to format log message with variable arguments
-    char buffer[1024]; // Adjust buffer size as needed
+    char buffer[8192]; // Adjust buffer size as needed
     vsnprintf(buffer, sizeof(buffer), format, args);
     log_message += buffer;
 
-    if (log_destination_ == LoggerLogDestination::LOGGER_DEST_CONSOLE || log_destination_ == LoggerLogDestination::LOGGER_DEST_BOTH) {
+    if (log_destination_ == LoggerLogDestination::LOGGER_DEST_CONSOLE || log_destination_ == LoggerLogDestination::LOGGER_DEST_BOTH)
+    {
         std::cout << log_message << std::endl;
     }
-    if (log_destination_ == LoggerLogDestination::LOGGER_DEST_FILE || log_destination_ == LoggerLogDestination::LOGGER_DEST_BOTH) {
-        if (log_file_.is_open()) {
+    if (log_destination_ == LoggerLogDestination::LOGGER_DEST_FILE || log_destination_ == LoggerLogDestination::LOGGER_DEST_BOTH)
+    {
+        if (log_file_.is_open())
+        {
             log_file_ << log_message << std::endl;
-        } else {
+        }
+        else
+        {
             std::cerr << "Log file is not open. Cannot log to file." << std::endl;
         }
     }
@@ -97,7 +104,8 @@ void logger_set_log_level(LoggerLogLevel level)
     Logger::get_instance().set_log_level(level);
 }
 
-void logger_log(LoggerLogLevel level, const char* format, ...) {
+void logger_log(LoggerLogLevel level, const char *format, ...)
+{
     va_list args;
     va_start(args, format);
 

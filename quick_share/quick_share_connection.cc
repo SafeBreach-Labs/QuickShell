@@ -1,10 +1,10 @@
 #include "include/quick_share_connection.hh"
-#include "logger/include/logger.hh"
+#include "common/include/logger.hh"
 
 #include <string>
 #include <memory>
 
-#include "quick_share/include/exceptions.hh"
+#include "common/include/exceptions.hh"
 
 static const size_t VERIFICATION_STRING_LENGTH = 32;
 

@@ -1,5 +1,5 @@
 #include "tools/include/offline_frames_storage.hh"
-#include "quick_share/include/exceptions.hh"
+#include "common/include/exceptions.hh"
 
 #include <iostream>
 #include <fstream>

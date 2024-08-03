@@ -28,7 +28,7 @@ cc_library(
     ],
     deps = [
         ":quick_share_cc_proto",
-        "//logger:logger",
+        "//common:common",
         "@com_google_ukey2//:ukey2"
     ]
 )

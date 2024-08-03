@@ -3,8 +3,8 @@
 
 #include "quick_share/include/quick_share_medium.hh"
 #include "quick_share/include/quick_share_connection.hh"
-#include "quick_share/include/exceptions.hh"
-#include "logger/include/logger.hh"
+#include "common/include/exceptions.hh"
+#include "common/include/logger.hh"
 #include "tools/include/offline_frames_storage.hh"
 #include "tools/include/utils.hh"
 
