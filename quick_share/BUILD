@@ -5,7 +5,7 @@ proto_library(
         "proto/wire_format.proto"
     ],
     visibility = [
-        "//visibility:private",  # Only private by automation, not intent. Owner may accept CLs adding visibility. See go/scheuklappen#explicit-private.
+        "//visibility:private",
     ],
 )
 
@@ -17,6 +17,17 @@ cc_proto_library(
     deps = [
         ":quick_share_proto",
     ],
+)
+
+load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
+
+py_proto_library(
+    name = "quick_share_py_proto",
+    srcs = [
+        "proto/offline_wire_formats.proto",
+        "proto/wire_format.proto"
+    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
