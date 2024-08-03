@@ -5,6 +5,8 @@
 // At CL 317565061
 syntax = "proto2";
 package sharing.nearby;
+// Required in Chrome.
+option optimize_for = LITE_RUNTIME;
 // File metadata. Does not include the actual bytes of the file.
 // NEXT_ID=6
 message FileMetadata {

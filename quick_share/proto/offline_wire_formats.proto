@@ -25,11 +25,11 @@ message OfflineFrame {
     UNKNOWN_VERSION = 0;
     V1 = 1;
   }
-  required Version version = 1;
+  optional Version version = 1;
 
   // Right now there's only 1 version, but if there are more, exactly one of
   // the following fields will be set.
-  required V1Frame v1 = 2;
+  optional V1Frame v1 = 2;
 }
 
 message V1Frame {
@@ -48,7 +48,7 @@ message V1Frame {
     AUTO_RECONNECT = 11;
     BANDWIDTH_UPGRADE_RETRY = 12;
   }
-  required FrameType type = 1;
+  optional FrameType type = 1;
 
   // Exactly one of the following fields will be set.
   optional ConnectionRequestFrame connection_request = 2;
@@ -84,8 +84,8 @@ message ConnectionRequestFrame {
   }
   // LINT.ThenChange(//depot/google3/third_party/nearby/proto/connections_enums.proto)
 
-  required string endpoint_id = 1;
-  required bytes endpoint_name = 2;
+  optional string endpoint_id = 1;
+  optional string endpoint_name = 2;
   optional bytes handshake_data = 3;
   // A random number generated for each outgoing connection that is presently
   // used to act as a tiebreaker when 2 devices connect to each other
@@ -148,6 +148,7 @@ message PayloadTransferFrame {
     UNKNOWN_PACKET_TYPE = 0;
     DATA = 1;
     CONTROL = 2;
+    PAYLOAD_ACK = 3;
   }
 
   message PayloadHeader {
@@ -157,9 +158,9 @@ message PayloadTransferFrame {
       FILE = 2;
       STREAM = 3;
     }
-    required int64 id = 1;
-    required PayloadType type = 2;
-    required int64 total_size = 3;
+    optional int64 id = 1;
+    optional PayloadType type = 2;
+    optional int64 total_size = 3;
     optional bool is_sensitive = 4;
     optional bytes file_name = 5;
     optional bytes parent_folder = 6;
@@ -182,7 +183,8 @@ message PayloadTransferFrame {
       UNKNOWN_EVENT_TYPE = 0;
       PAYLOAD_ERROR = 1;
       PAYLOAD_CANCELED = 2;
-      PAYLOAD_RECEIVED_ACK = 3;
+      // Use PacketType.PAYLOAD_ACK instead
+      PAYLOAD_RECEIVED_ACK = 3 [deprecated = true];
     }
 
     optional EventType event = 1;
@@ -190,7 +192,7 @@ message PayloadTransferFrame {
   }
 
   optional PacketType packet_type = 1;
-  required PayloadHeader payload_header = 2;
+  optional PayloadHeader payload_header = 2;
 
   // Exactly one of the following fields will be set, depending on the type.
   optional PayloadChunk payload_chunk = 3;
@@ -228,39 +230,39 @@ message BandwidthUpgradeNegotiationFrame {
 
     // Accompanies Medium.WIFI_HOTSPOT.
     message WifiHotspotCredentials {
-      required string ssid = 1;
-      required string password = 2;
+      optional string ssid = 1;
+      optional string password = 2;
       optional int32 port = 3;
-      required string gateway = 4 [default = "0.0.0.0"];
+      optional string gateway = 4 [default = "0.0.0.0"];
       // This field can be a band or frequency
       optional int32 frequency = 5 [default = -1];
     }
 
     // Accompanies Medium.WIFI_LAN.
     message WifiLanSocket {
-      required bytes ip_address = 1;
-      required int32 wifi_port = 2;
+      optional bytes ip_address = 1;
+      optional int32 wifi_port = 2;
     }
 
     // Accompanies Medium.BLUETOOTH.
     message BluetoothCredentials {
-      required string service_name = 1;
-      required string mac_address = 2;
+      optional string service_name = 1;
+      optional string mac_address = 2;
     }
 
     // Accompanies Medium.WIFI_AWARE.
     message WifiAwareCredentials {
-      required string service_id = 1;
-      required bytes service_info = 2;
+      optional string service_id = 1;
+      optional bytes service_info = 2;
       optional string password = 3;
     }
 
     // Accompanies Medium.WIFI_DIRECT.
     message WifiDirectCredentials {
-      required string ssid = 1;
-      required string password = 2;
+      optional string ssid = 1;
+      optional string password = 2;
       optional int32 port = 3;
-      required int32 frequency = 4;
+      optional int32 frequency = 4;
       optional string gateway = 5 [default = "0.0.0.0"];
       // IPv6 link-local address, network order (128bits).
       // The GO should listen on both IPv4 and IPv6 addresses.
@@ -274,7 +276,7 @@ message BandwidthUpgradeNegotiationFrame {
       optional LocationHint location_hint = 2;
     }
 
-    required Medium medium = 1;
+    optional Medium medium = 1;
 
     // Exactly one of the following fields will be set.
     optional WifiHotspotCredentials wifi_hotspot_credentials = 2;
@@ -293,14 +295,14 @@ message BandwidthUpgradeNegotiationFrame {
 
   // Accompanies CLIENT_INTRODUCTION events.
   message ClientIntroduction {
-    required string endpoint_id = 1;
+    optional string endpoint_id = 1;
     optional bool supports_disabling_encryption = 2;
   }
 
   // Accompanies CLIENT_INTRODUCTION_ACK events.
   message ClientIntroductionAck {}
 
-  required EventType event_type = 1;
+  optional EventType event_type = 1;
 
   // Exactly one of the following fields will be set.
   optional UpgradePathInfo upgrade_path_info = 2;
