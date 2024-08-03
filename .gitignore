@@ -60,7 +60,6 @@ user.bazelrc
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe

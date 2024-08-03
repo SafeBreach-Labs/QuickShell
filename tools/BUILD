@@ -2,7 +2,7 @@
 
 cc_library(
     name = "tools_library",
-    srcs = ["offline_frames_storage.cc", "utils.cc"],
+    srcs = ["tool_helpers/offline_frames_storage.cc", "tool_helpers/utils.cc"],
     hdrs = glob(["include/*.hh", "include/*.h"]),
     deps = [
         "//common:common",
