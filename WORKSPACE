@@ -29,15 +29,6 @@ rules_pkg_dependencies()
 
 
 http_archive(
-    name = "com_google_protobuf",
-    strip_prefix = "protobuf-27.1",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/refs/tags/v27.1.tar.gz"],
-)
-
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-protobuf_deps()
-
-http_archive(
     name = "boringssl",
     sha256 = "5d299325d1db8b2f2db3d927c7bc1f9fcbd05a3f9b5c8239fa527c09bf97f995",
     strip_prefix = "boringssl-0acfcff4be10514aacb98eb8ab27bb60136d131b",
@@ -48,32 +39,4 @@ http_archive(
     name = "com_google_ukey2",
     strip_prefix = "ukey2-master",
     urls = ["https://github.com/google/ukey2/archive/master.zip"],
-)
-
-http_archive(
-    name = "argparse",
-    sha256 = "674e724c2702f0bfef1619161815257a407e1babce30d908327729fba6ce4124",
-    strip_prefix = "argparse-3.0",
-    url = "https://github.com/p-ranav/argparse/archive/refs/tags/v3.0.zip",
-    # For some reason bazel fails to find argparse's BUILD file in its root folder no matter what
-    build_file_content = """
-cc_library(
-    name = "argparse",
-    hdrs = ["include/argparse/argparse.hpp"],
-    includes = ["include"],
-    visibility = ["//visibility:public"],
-)"""
-
-)
-
-http_archive(
-    name = "com_google_absl",
-    strip_prefix = "abseil-cpp-20240116.2",
-    urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20240116.2.tar.gz"],
-)
-
-http_archive(
-    name = "nlohmann_json",
-    strip_prefix = "json-3.11.3",
-    urls = ["https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz"]
 )
