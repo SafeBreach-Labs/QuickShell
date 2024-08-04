@@ -25,9 +25,9 @@ const uintptr_t WRITE_PACKET_OFFSET = 0x4EC820;
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
 
-// TODO: change those before release!!
-const std::string PACKET_FLOW_DIR_PATH = "C:\\Users\\Or\\Downloads\\nearby_sniffer\\";
-const std::string LOG_FILE_PATH = "C:\\Users\\Or\\Downloads\\nearby_sniffer\\sniffer_logs.txt";
+// IMPORTANT - Set these paths to your preferred paths
+const std::string PACKET_FLOW_DIR_PATH = "C:\\Users\\User\\example\\path\\";
+const std::string LOG_FILE_PATH = "C:\\Users\\User\\example\\path\\sniffer_logs.txt";
 const unsigned int SEVEN_BYTES_IN_BITS = 56;
 
 std::string g_packet_flow_initiator_to_responder_file_path;
