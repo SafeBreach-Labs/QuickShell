@@ -1,9 +1,10 @@
-
-
 cc_library(
     name = "tool_helpers_library",
     srcs = ["tool_helpers/offline_frames_storage.cc", "tool_helpers/utils.cc"],
-    hdrs = glob(["include/*.hh", "include/*.h"]),
+    hdrs = glob(["tool_helpers/include/*.hh", "tool_helpers/include/*.h"]),
+    visibility = [
+        "//visibility:public",
+    ],
     deps = [
         "//common:common",
         "//quick_share:quick_share_cc_proto",

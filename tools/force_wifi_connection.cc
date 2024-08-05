@@ -5,9 +5,9 @@
 #include "quick_share/include/quick_share_medium.hh"
 #include "quick_share/include/quick_share_connection.hh"
 #include "common/include/exceptions.hh"
-#include "tools/include/offline_frames_storage.hh"
+#include "tools/tool_helpers/include/offline_frames_storage.hh"
 #include "common/include/logger.hh"
-#include "tools/include/utils.hh"
+#include "tools/tool_helpers/include/utils.hh"
 
 #pragma warning( push )
 #pragma warning( disable : 4838) 

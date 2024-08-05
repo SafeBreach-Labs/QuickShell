@@ -5,8 +5,8 @@
 #include "quick_share/include/quick_share_connection.hh"
 #include "common/include/exceptions.hh"
 #include "common/include/logger.hh"
-#include "tools/include/offline_frames_storage.hh"
-#include "tools/include/utils.hh"
+#include "tools/tool_helpers/include/offline_frames_storage.hh"
+#include "tools/tool_helpers/include/utils.hh"
 
 static const GUID QUICK_SHARE_BT_GUID = {0xA82EFA21, 0xAE5C, 0x3DDE, {0x9B, 0xBC, 0xF1, 0x6D, 0xA7, 0xB1, 0x6C, 0x5A}};
 

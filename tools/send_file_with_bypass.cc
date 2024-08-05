@@ -6,8 +6,8 @@
 #include "quick_share/proto/offline_wire_formats.pb.h"
 #include "quick_share/include/quick_share_connection.hh"
 #include "common/include/exceptions.hh"
-#include "tools/include/offline_frames_storage.hh"
-#include "tools/include/utils.hh"
+#include "tools/tool_helpers/include/offline_frames_storage.hh"
+#include "tools/tool_helpers/include/utils.hh"
 #include "common/include/logger.hh"
 
 using OfflineFrame = ::location::nearby::connections::OfflineFrame;
