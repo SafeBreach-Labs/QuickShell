@@ -87,8 +87,12 @@ std::unique_ptr<OfflineFrame> QuickShareConnection::recv_offline_frame(bool shou
         throw ProtobufException("Failed parsing Offline Frame bytes into an Offline Frame object");
     }
 
-    logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received offline frame:");
-    logger_log(LoggerLogLevel::LEVEL_DEBUG, offline_frame->DebugString().c_str());
+    try {
+        logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received offline frame:");
+        logger_log(LoggerLogLevel::LEVEL_DEBUG, offline_frame->DebugString().c_str());
+    } catch (std::exception) {
+        logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received a packet that is not offline frame");
+    }
 
     return offline_frame;
 }
