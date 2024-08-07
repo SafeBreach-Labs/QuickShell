@@ -31,17 +31,8 @@ cc_binary(
         "//quick_share:quick_share",
         "@argparse//:argparse",
     ],
-)
-
-
-cc_binary(
-    name = "send_file_with_bypass_after_fix",
-    srcs = ["send_file_with_bypass_after_fix.cc"],
-    deps = [
-        ":tool_helpers_library",
-        "//common:common",
-        "//quick_share:quick_share",
-        "@argparse//:argparse",
+    visibility = [
+        "//visibility:public",
     ],
 )
 
@@ -55,6 +46,9 @@ cc_binary(
         "//quick_share:quick_share",
         "@argparse//:argparse",
     ],
+    visibility = [
+        "//visibility:public",
+    ],
 )
 
 cc_binary(
@@ -67,6 +61,7 @@ cc_binary(
         ":tool_helpers_library",
         "//common:common",
         "@nlohmann_json//:json",
+        "@com_google_protobuf//:protobuf"
     ],
 )
 
