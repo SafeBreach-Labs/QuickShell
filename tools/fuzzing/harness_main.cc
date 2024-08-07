@@ -131,11 +131,10 @@ void generateRandomString(char* output) {
 }
 
 void connect_to_target() {
-    DWORD listen_port = GetPortsForProcess(TARGET_PROCESS_NAME);
-    wifi_medium.set_target(LOCALHOST, listen_port);
-
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Trying to connect to target (20 times max)");
     for (size_t i=0; i<20; i++){
+        DWORD listen_port = GetPortsForProcess(TARGET_PROCESS_NAME);
+        wifi_medium.set_target(LOCALHOST, listen_port);
         try{
             quick_share_connection.connect();
             return;
@@ -146,7 +145,7 @@ void connect_to_target() {
         catch (TimeoutException e){
             logger_log(LoggerLogLevel::LEVEL_ERROR ,"Timed out waiting for the client to connect, trying again in 1 sec");
         }
-        Sleep(1000);    
+        Sleep(1000);
     }
 
     throw SocketException("Couldn't connect to the fuzzing target's");
