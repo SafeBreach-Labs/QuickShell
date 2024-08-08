@@ -90,8 +90,9 @@ std::unique_ptr<OfflineFrame> QuickShareConnection::recv_offline_frame(bool shou
     try {
         logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received offline frame:");
         logger_log(LoggerLogLevel::LEVEL_DEBUG, offline_frame->DebugString().c_str());
-    } catch (std::exception) {
-        logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received a packet that is not offline frame");
+        logger_log(LoggerLogLevel::LEVEL_DEBUG, "Received offline frame successfully printed");
+    } catch (...) {
+        logger_log(LoggerLogLevel::LEVEL_DEBUG, "Cannot print offline frame");
     }
 
     return offline_frame;
