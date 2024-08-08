@@ -76,6 +76,7 @@ py_binary(
     deps = [
         ":python_tool_helpers_library",
         "//quick_share:quick_share_py_proto",
+        "@pypi//pyyaml:pkg",
     ]
 )
 
@@ -85,5 +86,6 @@ py_binary(
     deps = [
         ":python_tool_helpers_library",
         "//quick_share:quick_share_py_proto",
+        "@pypi//pyyaml:pkg",
     ]
 )
