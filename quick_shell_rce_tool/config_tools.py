@@ -1,8 +1,8 @@
 import yaml
 from typing import Dict
 
-from downloadable_file import DownloadableFile
-from domain_path import DomainPath, Domain
+from quick_shell_rce_tool.downloadable_file import DownloadableFile
+from quick_shell_rce_tool.domain_path import DomainPath, Domain
 
 
 def parse_popular_files_yaml(filename) -> Dict[DomainPath, list[DownloadableFile]]:

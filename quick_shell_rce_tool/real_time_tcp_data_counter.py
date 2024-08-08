@@ -1,6 +1,6 @@
 import logging
 import time
-from mitm_sniffer import IMitmSniffer
+from quick_shell_rce_tool.mitm_sniffer import IMitmSniffer
 
 class RealTimeTcpDataCounter:
 

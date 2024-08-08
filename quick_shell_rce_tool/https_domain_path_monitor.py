@@ -5,8 +5,8 @@ from scapy.all import IP
 from scapy.layers.all import load_layer
 from scapy.layers.tls.all import TLS
 
-from domain_path import DomainPath
-from mitm_sniffer import get_mitm_sniffer, IMitmSniffer
+from quick_shell_rce_tool.domain_path import DomainPath
+from quick_shell_rce_tool.mitm_sniffer import get_mitm_sniffer, IMitmSniffer
 
 TLS_PACKET_TYPE_HANDSHAKE = 22
 TLS_HANDSHAKE_TYPE_CLIENT_HELLO = 1

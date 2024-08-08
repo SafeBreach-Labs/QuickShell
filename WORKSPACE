@@ -40,3 +40,43 @@ http_archive(
     strip_prefix = "ukey2-master",
     urls = ["https://github.com/google/ukey2/archive/master.zip"],
 )
+
+# Load rules_python
+http_archive(
+    name = "rules_python",
+    strip_prefix = "rules_python-0.15.0",
+    urls = [
+        "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.15.0.tar.gz",
+    ],
+)
+
+
+load("@rules_python//python:repositories.bzl", "py_repositories", "python_register_toolchains")
+
+py_repositories()
+
+python_register_toolchains(
+    name = "python_3_9",
+    python_version = "3.9.13",
+)
+
+load("@rules_python//python:pip.bzl", "pip_parse")
+
+pip_parse(
+    # (Optional) You can set an environment in the pip process to control its
+    # behavior. Note that pip is run in "isolated" mode so no PIP_<VAR>_<NAME>
+    # style env vars are read, but env vars that control requests and urllib3
+    # can be passed
+    # environment = {"HTTPS_PROXY": "http://my.proxy.fun/"},
+    name = "pypi",
+
+    python_interpreter_target = "@python_3_9_host//:python",
+
+    requirements_lock = "//quick_shell_rce_tool:requirements.lock",
+)
+
+load("@pypi//:requirements.bzl", "install_deps")
+
+# Initialize repositories for all packages in requirements_lock.txt.
+install_deps()
+

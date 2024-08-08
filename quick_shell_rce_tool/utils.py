@@ -1,6 +1,3 @@
-import socket
-import psutil
-
 def calc_bigger_in_percentage(num, bigger_num):
     print(f"num: {num}, bigger_num: {bigger_num}")
     if num >= bigger_num:
