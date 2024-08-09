@@ -18,6 +18,9 @@ This repository includes the tools we developed during our research:
 5. [**force_wifi_connection**](./docs/doc_force_wifi_connection.md): Forces a device with Quick Share to connect to a given WiFi network. If performed against a Windows device with the vulnerable Quick Share version, then it also crashes its Quick Share app, creating a Wi-Fi connection to the given Wi-Fi network that lasts forever.
 6. **quick_fuzz**: A fuzzer for Quick Share for Windows. Each fuzzing iteration sends a sequence of offline frames, simulating an entire transfer session.
 
+## Building Tools
+This repository uses Bazel for building. In order to build the tools you'll need to install Bazel - [Install Bazel on Windows](https://bazel.build/install/windows)
+
 
 ## Further Contributions
 If you have any questions or need further assistance, feel free to reach out. We look forward to your contributions and collaboration in improving this set of tools.
