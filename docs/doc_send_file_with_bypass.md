@@ -1,5 +1,13 @@
 # send_file_with_bypass
 Sends a file to a Quick Share device while bypassing authorization and acceptance of the file by the victim user.
+
+## Build
+Run:
+```cmd
+bazel build //tools:send_file_with_bypass
+```
+The executable will be created in `./bazel-bin/tools`
+
 ## Usage
 ```cmd
 send_file_with_bypass.exe <medium> <target_address> <path_of_file_to_send> <name_to_send_in_base64>

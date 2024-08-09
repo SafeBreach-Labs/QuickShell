@@ -4,6 +4,13 @@ Forces a target Quick Share device to connect to a specified WiFi network.
 To make the WiFi connection last indefinitely, a packet that crashes Quick Share for Windows is sent once the WiFi connection is established.
 Note: The easiest configuration for using this tool would be running it on a Windows computer with Windows' hotspot feature turned on and used as the the target WiFi network
 
+## Build
+Run:
+```cmd
+bazel build //tools:force_wifi_connection
+```
+The executable will be created in `./bazel-bin/tools`
+
 ## Usage
 ```cmd
 force_wifi_connection.exe <target_bt_mac> <ap_ssid> <ap_password> <ap_freq> <ip>

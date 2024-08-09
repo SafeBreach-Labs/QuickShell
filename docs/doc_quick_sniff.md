@@ -2,6 +2,13 @@
 
 A sniffer that captures Quick Share's protocol packets, prints them textually. In addition, for each device in the session, it creates a binary file in our custom format that holds all the sent packets in the order they were sent.
 
+## Build
+Run:
+```cmd
+bazel build //tools:quick_sniff
+```
+The DLL will be created in `./bazel-bin/tools`
+
 ## Usage
 quick_sniff is really a DLL that is injected into the Quick Share for Windows app. Therefore, once the DLL is compiled, you need to either inject the DLL into a running Quick Share app or alternatively modify the specific `nearby_sharing_dart.dll` of the Quick Share app to be dependent on `quick_sniff.dll` (using a tool like CFF Explorer for example).
 

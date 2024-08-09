@@ -1,5 +1,13 @@
 # send_packets
 Sends Quick Share's protocol packets. As input, it receives a binary file in our custom format with packets to send (the same format that the quick_sniff tool outputs).
+
+## Build
+Run:
+```cmd
+bazel build //tools:send_packets
+```
+The executable will be created in `./bazel-bin/tools`
+
 ## Usage
 ```cmd
 send_packets.exe <medium> <target_address> <packet_flow_file>
