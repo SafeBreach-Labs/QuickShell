@@ -1,6 +1,6 @@
 # QuickShell
 <div align="center">
-<img src="./images/QuickShell.jpg" width="50%" style="border-radius:50%;"/>
+<img src="./images/quick_shell_logo.png" width="50%"/>
 </div align="center">
 
 ## Overview
