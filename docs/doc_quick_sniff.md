@@ -10,7 +10,10 @@ bazel build //tools:quick_sniff
 The DLL will be created in `./bazel-bin/tools`
 
 ## Usage
-quick_sniff is really a DLL that is injected into the Quick Share for Windows app. Therefore, once the DLL is compiled, you need to either inject the DLL into a running Quick Share app or alternatively modify the specific `nearby_sharing_dart.dll` of the Quick Share app to be dependent on `quick_sniff.dll` (using a tool like CFF Explorer for example).
+quick_sniff is really a DLL that is injected into the Quick Share for Windows app. Therefore, once the DLL is compiled, you need to either inject the DLL into a running Quick Share app or alternatively modify the specific `nearby_sharing_dart.dll` of the Quick Share app to be dependent on `quick_sniff.dll` (using a tool like CFF Explorer for example). Inside the vulnerable version of the Quick Share app that we uploaded to this repo, you'll find a file called `nearby_sharing_dart_quick_sniff.dll` in addition to `nearby_sharing_dart.dll`. The `nearby_sharing_dart_quick_sniff.dll` file is a modified version of `nearby_sharing_dart.dll` that is dependent on `quick_sniff.dll`. Therefore, once you compiled `quick_sniff.dll` you can do these two simple actions in order to execute quick_sniff:
+1. Copy `quick_sniff.dll` into the root folder of the vulnerable Quick Share app
+2. Rename `nearby_sharing_dart_quick_sniff.dll` to `nearby_sharing_dart.dll` 
+3. Run the vulnerable version of the app (`nearby_share.exe`)
 
 ### Parameters
 Since quick_sniff is a DLL and not a command line tool, we created two constant variables at the top of the `quick_sniff.cc` file that is compiled into `quick_sniff.dll`. These are their names and purpose:
