@@ -1,4 +1,4 @@
-#include "tools/fuzzing/include/test_case.hh"
+#include "quick_fuzz/include/test_case.hh"
 #include <cstring> // For memcpy
 
 // Constructors

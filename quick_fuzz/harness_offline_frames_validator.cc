@@ -1,10 +1,10 @@
-#include "tools/fuzzing/include/harness_offline_frames_validator.hh"
+#include "quick_fuzz/include/harness_offline_frames_validator.hh"
 
 #include <cstdlib>
 #include <regex>
 #include "absl/strings/string_view.h"
 
-#include "tools/fuzzing/proto/offline_wire_formats_for_mutator.pb.h"
+#include "quick_fuzz/proto/offline_wire_formats_for_mutator.pb.h"
 
 using UpgradePathInfo = ::location::nearby::connections::BandwidthUpgradeNegotiationFrame::UpgradePathInfo;
 

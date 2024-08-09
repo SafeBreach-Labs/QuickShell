@@ -7,8 +7,8 @@
 
 #include <port/protobuf.h>
 #include <mutator.h>
-#include "tools/fuzzing/include/harness_offline_frames_validator.hh"
-#include "tools/fuzzing/proto/offline_wire_formats_for_mutator.pb.h"
+#include "quick_fuzz/include/harness_offline_frames_validator.hh"
+#include "quick_fuzz/proto/offline_wire_formats_for_mutator.pb.h"
 #include "common/include/logger.hh"
 
 #define _CRT_SECURE_NO_WARNINGS

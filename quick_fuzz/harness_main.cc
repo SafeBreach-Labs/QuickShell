@@ -15,7 +15,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 
-#include "tools/fuzzing/include/test_case.hh"
+#include "quick_fuzz/include/test_case.hh"
 #include "quick_share/include/quick_share_connection.hh"
 #include "common/include/exceptions.hh"
 #include "tools/tool_helpers/include/offline_frames_storage.hh"
@@ -164,7 +164,7 @@ void send_input_offline_frames_to_target(std::vector<std::unique_ptr<OfflineFram
 
     // Receive CONNECTION_RESPONSE
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Waiting for CONNECTION_RESPONSE");
-    quick_share_connection.recv_offline_frame();
+    quick_share_connection.recv_packet();
 
     // Send CONNECTION_RESPONSE
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Sending CONNECTION_RESPONSE");
@@ -172,8 +172,8 @@ void send_input_offline_frames_to_target(std::vector<std::unique_ptr<OfflineFram
 
     // Paired key encryption
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Waiting for paired key encryption");
-    quick_share_connection.recv_offline_frame(true);
-    quick_share_connection.recv_offline_frame(true);
+    quick_share_connection.recv_packet();
+    quick_share_connection.recv_packet();
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Sending for paired key encryption");
     quick_share_connection.send_offline_frame(**offline_frames_iterator++, true);
@@ -181,8 +181,8 @@ void send_input_offline_frames_to_target(std::vector<std::unique_ptr<OfflineFram
 
     // Paired key result
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Wait for Paired key result");
-    quick_share_connection.recv_offline_frame(true);
-    quick_share_connection.recv_offline_frame(true);
+    quick_share_connection.recv_packet();
+    quick_share_connection.recv_packet();
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Sending Paired key result");
     quick_share_connection.send_offline_frame(**offline_frames_iterator++, true);
@@ -194,8 +194,8 @@ void send_input_offline_frames_to_target(std::vector<std::unique_ptr<OfflineFram
     quick_share_connection.send_offline_frame(**offline_frames_iterator++, true);
 
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Waiting for File Introduction response");
-    quick_share_connection.recv_offline_frame(true);
-    quick_share_connection.recv_offline_frame(true);
+    quick_share_connection.recv_packet();
+    quick_share_connection.recv_packet();
     
     logger_log(LoggerLogLevel::LEVEL_DEBUG ,"Send all the rest of packets");
     while (offline_frames_iterator != offline_frames.end()) {
