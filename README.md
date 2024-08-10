@@ -6,6 +6,10 @@
 ## Overview
 This project showcases the vulnerability research that we conducted on Quick Share, which we presented at DEF CON 32 (2024). Our work reveals critical vulnerabilities and includes tools we’ve developed, including a Remote Code Execution (RCE) attack chain tool.
 
+* [DEF CON Talk link](https://defcon.org/html/defcon-32/dc-32-speakers.html#54485)
+
+* [Technical Blog Post link](https://www.safebreach.com/blog/rce-attack-chain-on-quick-share)
+
 
 ## Repository Contents
 
