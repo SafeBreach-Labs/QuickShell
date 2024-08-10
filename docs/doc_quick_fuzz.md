@@ -10,7 +10,15 @@ bazel build //quick_fuzz:quick_share_fuzzing_patches
 ```
 The DLLs will be created in `./bazel-bin/quick_fuzz`
 
+## Requirement
+As far as we tried, DynamoRIO does not support recent Windows versions. We have tested and successfully ran this fuzzer on the following Windows versions:
+  * Windows 10 20h2
+  * Windows 10 22h2
+
+Once you install one of them, make sure you disable updates. 
+
 ## Usage
+
 * `fuzzing_harness.dll` should be used as an argument for afl-fuzz.exe
 * `quick_share_fuzzing_patches.dll` should be injected into the Quick Share app that is being fuzzed. Inside the vulnerable version of the Quick Share app that we uploaded to this repo, you'll find a file called `nearby_sharing_dart_fuzzer_patches.dll` in addition to `nearby_sharing_dart.dll`. The `nearby_sharing_dart_fuzzer_patches.dll` file is a modified version of `nearby_sharing_dart.dll` that is dependent on `quick_share_fuzzing_patches.dll`. Therefore, once you compiled `quick_share_fuzzing_patches.dll` you can do these two simple actions in order to have the Quick Share app running with an injected `quick_share_fuzzing_patches.dll`:
   * Copy `quick_share_fuzzing_patches.dll` into the root folder of the vulnerable Quick Share app
