@@ -1,0 +1,5 @@
+build --copt=/utf-8
+build --copt=/Zc:preprocessor
+build --cxxopt=/std:c++17
+build --cxxopt=/Zc:__cplusplus
+common --enable_bzlmod

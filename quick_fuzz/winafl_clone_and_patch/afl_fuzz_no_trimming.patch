@@ -1,0 +1,44 @@
+--- afl-fuzz.c	2024-08-09 20:57:24
++++ afl-fuzz.c	2024-08-09 21:02:39
+@@ -5638,27 +5638,28 @@
+   /************
+    * TRIMMING *
+    ************/
++// Trimming comment-out due to crashes in our harness.
+ 
+-  if (!dumb_mode && !queue_cur->trim_done) {
++  // if (!dumb_mode && !queue_cur->trim_done) {
+ 
+-    u8 res = trim_case(argv, queue_cur, in_buf);
++  //   u8 res = trim_case(argv, queue_cur, in_buf);
+ 
+-    if (res == FAULT_ERROR)
+-      FATAL("Unable to execute target application");
+-
+-    if (stop_soon) {
+-      cur_skipped_paths++;
+-      goto abandon_entry;
+-    }
++  //   if (res == FAULT_ERROR)
++  //     FATAL("Unable to execute target application");
+ 
+-    /* Don't retry trimming, even if it failed. */
++  //   if (stop_soon) {
++  //     cur_skipped_paths++;
++  //     goto abandon_entry;
++  //   }
+ 
+-    queue_cur->trim_done = 1;
++  //   /* Don't retry trimming, even if it failed. */
+ 
+-    if (len != queue_cur->len) len = queue_cur->len;
++  //   queue_cur->trim_done = 1;
+ 
+-  }
++  //   if (len != queue_cur->len) len = queue_cur->len;
+ 
++  // }
++
+   memcpy(out_buf, in_buf, len);
+ 
+   /*********************

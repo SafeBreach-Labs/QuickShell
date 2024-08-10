@@ -1,0 +1,6 @@
+pydivert
+zeroconf
+bleak
+scapy
+pyyaml
+parse

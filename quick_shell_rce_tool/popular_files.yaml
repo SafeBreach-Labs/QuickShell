@@ -1,0 +1,44 @@
+domain_paths_to_files:
+# Notepad++
+  - domain_paths:
+      - notepad-plus-plus.org
+      - objects.githubusercontent.com
+    timeout: 30
+    files:
+      - name: npp.8.6.2.Installer.x64.exe
+        size: 4840120
+
+# VScode
+  - domain_paths:
+      - vscode.download.prss.microsoft.com
+    timeout: 30
+    files:
+      - name: VSCodeUserSetup-x64-1.85.2.exe
+        size: 94814968
+
+# VLC
+  - domain_paths:
+      - mirror.library.ucy.ac.cy
+    timeout: 30
+    files:
+      - name: vlc-3.0.20-win64.exe
+        size: 44420344
+
+# Zoom
+  - domain_paths:
+      - cdn.zoom.us
+    timeout: 30
+    files:
+      - name: ZoomInstallerFull.exe
+        size: 89988912
+      - name: ZoomInstallerFull.exe # this is 32bit version.
+        size: 81817320
+
+# Spotify
+  - domain_paths:
+      - download.scdn.co
+    timeout: 30
+    files:
+      - name: SpotifySetup.exe
+        size: 1000368
+
