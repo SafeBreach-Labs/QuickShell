@@ -2,14 +2,14 @@ import argparse
 import os
 import yaml
 
-from python_tool_helpers.offline_frames_utils import offline_frame_dict_to_offline_frame
+from tools.python_tool_helpers.offline_frames_utils import offline_frame_dict_to_offline_frame
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Packs (serializes) Quick Share's (OfflineFrame) packets' pretty YAML files into their protobuf serialized byte form")
 
-    parser.add_argument("packets_dir", help="A path to a directory containing all YAML packets")
-    parser.add_argument("out_file", help="A path to the packets file to be created")
+    parser.add_argument("parsed_packet_flow_dir", help="A path to a directory containing all packets in YAML (as parse_packet_flows parses outputs)")
+    parser.add_argument("out_packet_flow_file", help="A path to the packets file to be created")
 
     return parser.parse_args()
 
