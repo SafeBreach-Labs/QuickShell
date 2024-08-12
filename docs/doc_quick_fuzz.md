@@ -26,6 +26,19 @@ Once you install one of them, make sure you disable updates.
 
 In addition to these DLLs, you'll need to have WinAFL as the fuzzing framework. We needed to perform a small patch in WinAFL's code in order for it to work with our harness and libprotobuf-mutator. You can either run the [`clone_and_patch_winafl.bat`](/quick_fuzz/winafl_clone_and_patch/clone_and_patch_winafl.bat) script that we created and then follow WinAFL's instructions for compilation yourself. Or you can use the precompiled version of WinAFL that we uploaded to this repo at [precompiled_patched_winafl.zip](/quick_fuzz/precompiled_patched_winafl.zip). Note that you'll have to download DynamoRIO version 10.92.19896, since `afl-fuzz.exe` needs it in order to run. You can download it from [here](https://github.com/DynamoRIO/dynamorio/releases/download/cronbuild-10.92.19896/DynamoRIO-Windows-10.92.19896.zip)
 
+### Corpus (Input Files):
+The input files are files in our custom binary format. Each file contains a sequence of packets (OfflineFrames) that should be sent in a fuzzing iteration. The fuzzing harness behaves as if the first packets in the sequence are:
+1. Connection Request
+2. Connection Response
+3. Paired Key Encryption
+4. Paired Key Result
+5. Introduction
+6. Introduction Done
+
+And then sends the rest of the packets (Usually Payload Transfer OfflineFrames with the content of the file to be sent)
+
+Corpus files can be created using the [**quick_sniff**](/docs/doc_quick_sniff.md) fuzzer (Would be best if you make sure that are no redundant packets up to the Introduction packet). To better understand the format of the corpus files, read the docs about [**pack_packet_flows & parse_packet_flows**](/docs/doc_pack_parse_packet_flows.md)
+
 ### Usage of afl-fuzz with our harness:
 You should refer to WinAFL's documentation in order to fully understand `afl-fuzz.exe`'s parameters
 
