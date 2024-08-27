@@ -1,9 +1,11 @@
 # QuickShell
+
 <div align="center">
 <img src="./images/quick_shell_logo.png" width="50%"/>
 </div align="center">
 
 ## Overview
+
 This project showcases the vulnerability research that we conducted on Quick Share, which we presented at DEF CON 32 (2024). Our work reveals critical vulnerabilities and includes tools we’ve developed, including a Remote Code Execution (RCE) attack chain tool.
 
 * [DEF CON Talk link](https://defcon.org/html/defcon-32/dc-32-speakers.html#54485)
@@ -23,11 +25,20 @@ This repository includes the tools we developed during our research:
 6. [**quick_fuzz**](./docs/doc_quick_fuzz.md): A fuzzer for Quick Share for Windows. Each fuzzing iteration sends a sequence of offline frames, simulating an entire transfer session.
 
 ### Supporting Tools
+
 1. [**pack_packet_flows & parse_packet_flows**](./docs/doc_pack_parse_packet_flows.md)
 
 ## Building Tools
+
 This repository uses Bazel for building. In order to build the tools you'll need to install Bazel - [Install Bazel on Windows](https://bazel.build/install/windows)
 
+## Authors - Or Yair & Shmuel Cohen
+
+|          | Or Yair                                         | Shmuel Cohen                                                  |
+|----------|-------------------------------------------------|---------------------------------------------------------------|
+| LinkedIn | [Or Yair](https://www.linkedin.com/in/or-yair/) | [Shmuel Cohen](https://www.linkedin.com/in/the-shmuel-cohen/) |
+| Twitter  | [@oryair1999](https://twitter.com/oryair1999)   | [@\_BinWalker\_](https://twitter.com/_BinWalker_)             |
 
 ## Further Contributions
+
 If you have any questions or need further assistance, feel free to reach out. We look forward to your contributions and collaboration in improving this set of tools.
