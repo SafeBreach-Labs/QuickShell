@@ -36,6 +36,20 @@ cc_binary(
     ],
 )
 
+cc_binary(
+    name = "send_file_with_bypass_after_fix",
+    srcs = ["send_file_with_bypass_after_fix.cc"],
+    deps = [
+        ":tool_helpers_library",
+        "//common:common",
+        "//quick_share:quick_share",
+        "@argparse//:argparse",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+)
+
 
 cc_binary(
     name = "force_wifi_connection",
